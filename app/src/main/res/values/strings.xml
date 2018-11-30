@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">SemestR</string>
+    <string name="new_semester">Add new semester</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="semester_number">Semester number</string>
+    <string name="university">University</string>
+    <string name="degree">Degree</string>
+    <string name="sem_number_text">. semester</string>
+</resources>
