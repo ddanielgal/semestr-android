@@ -16,15 +16,14 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 )
 public class Subject {
     @PrimaryKey(autoGenerate = true)
-    public Long subjectId;
-    public String website;
+    public Long id;
+    public String name;
     public int credits;
-    public final int semesterId;
+    public final Long semesterId;
 
-    public Subject(Long subjectId, String website, int credits, int semesterId) {
-        this.subjectId = subjectId;
-        this.website = website;
+    public Subject(String name, int credits, Long semesterId) {
         this.credits = credits;
+        this.name = name;
         this.semesterId = semesterId;
     }
 }

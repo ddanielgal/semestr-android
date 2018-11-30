@@ -16,7 +16,7 @@ public interface SubjectDao {
     List<Subject> getAll();
 
     @Query("SELECT * FROM subject WHERE semesterId=:semesterId")
-    List<Subject> getSubjectsForSemester(final int semesterId);
+    List<Subject> getSubjectsForSemester(final Long semesterId);
 
     @Insert
     long insert(Subject subject);
