@@ -1,6 +1,5 @@
-package hu.danielgaldev.semestr.semester;
+package hu.danielgaldev.semestr.adapter;
 
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,13 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import hu.danielgaldev.semestr.R;
-import hu.danielgaldev.semestr.data.Semester;
+import hu.danielgaldev.semestr.model.pojo.Semester;
 
 public class SemesterAdapter
         extends RecyclerView.Adapter<SemesterAdapter.SemesterViewHolder> {

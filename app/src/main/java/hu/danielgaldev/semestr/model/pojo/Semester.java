@@ -1,4 +1,4 @@
-package hu.danielgaldev.semestr.data;
+package hu.danielgaldev.semestr.model.pojo;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;

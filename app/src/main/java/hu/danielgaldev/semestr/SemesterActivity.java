@@ -1,7 +1,6 @@
 package hu.danielgaldev.semestr;
 
 import android.arch.persistence.room.Room;
-import android.content.ClipData;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,10 +11,10 @@ import android.view.View;
 
 import java.util.List;
 
-import hu.danielgaldev.semestr.data.Semester;
-import hu.danielgaldev.semestr.data.SemesterDatabase;
-import hu.danielgaldev.semestr.fragments.NewSemesterDialogFragment;
-import hu.danielgaldev.semestr.semester.SemesterAdapter;
+import hu.danielgaldev.semestr.model.pojo.Semester;
+import hu.danielgaldev.semestr.model.SemesterDatabase;
+import hu.danielgaldev.semestr.fragments.dialog.NewSemesterDialogFragment;
+import hu.danielgaldev.semestr.adapter.SemesterAdapter;
 
 
 public class SemesterActivity extends AppCompatActivity

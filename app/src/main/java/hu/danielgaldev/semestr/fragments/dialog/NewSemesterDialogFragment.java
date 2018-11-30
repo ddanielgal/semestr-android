@@ -1,4 +1,4 @@
-package hu.danielgaldev.semestr.fragments;
+package hu.danielgaldev.semestr.fragments.dialog;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -10,11 +10,10 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
 import hu.danielgaldev.semestr.R;
-import hu.danielgaldev.semestr.data.Semester;
+import hu.danielgaldev.semestr.model.pojo.Semester;
 
 public class NewSemesterDialogFragment extends DialogFragment {
 
