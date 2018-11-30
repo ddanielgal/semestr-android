@@ -1,5 +1,6 @@
 package hu.danielgaldev.semestr;
 
+import android.annotation.SuppressLint;
 import android.arch.persistence.room.Room;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,8 +12,8 @@ import android.view.View;
 
 import java.util.List;
 
+import hu.danielgaldev.semestr.model.SemestrDatabase;
 import hu.danielgaldev.semestr.model.pojo.Semester;
-import hu.danielgaldev.semestr.model.SemesterDatabase;
 import hu.danielgaldev.semestr.fragments.dialog.NewSemesterDialogFragment;
 import hu.danielgaldev.semestr.adapter.SemesterAdapter;
 
@@ -23,30 +24,7 @@ public class SemesterActivity extends AppCompatActivity
 
     private SemesterAdapter adapter;
     private RecyclerView recyclerView;
-    private SemesterDatabase database;
-
-    private void loadItemsInBackground() {
-        new AsyncTask<Void, Void, List<Semester>>() {
-
-            @Override
-            protected List<Semester> doInBackground(Void... voids) {
-                return database.semesterItemDao().getAll();
-            }
-
-            @Override
-            protected void onPostExecute(List<Semester> semesters) {
-                adapter.update(semesters);
-            }
-        }.execute();
-    }
-
-    private void initRecyclerView() {
-        recyclerView = findViewById(R.id.MainRecyclerView);
-        adapter = new SemesterAdapter(this);
-        loadItemsInBackground();
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-    }
+    private SemestrDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +34,20 @@ public class SemesterActivity extends AppCompatActivity
 
         database = Room.databaseBuilder(
                 getApplicationContext(),
-                SemesterDatabase.class,
+                SemestrDatabase.class,
                 "semester-list"
         ).build();
 
         initRecyclerView();
         initAddSemesterButton();
+    }
+
+    private void initRecyclerView() {
+        recyclerView = findViewById(R.id.MainRecyclerView);
+        adapter = new SemesterAdapter(this);
+        loadItemsInBackground();
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
     }
 
     private void initAddSemesterButton() {
@@ -74,19 +60,36 @@ public class SemesterActivity extends AppCompatActivity
         });
     }
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     public void onSemesterCreated(final Semester newItem) {
         new AsyncTask<Void, Void, Semester>() {
 
             @Override
             protected Semester doInBackground(Void... voids) {
-                newItem.id = database.semesterItemDao().insert(newItem);
+                newItem.id = database.semesterDao().insert(newItem);
                 return newItem;
             }
 
             @Override
             protected void onPostExecute(Semester semester) {
                 adapter.addItem(semester);
+            }
+        }.execute();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void loadItemsInBackground() {
+        new AsyncTask<Void, Void, List<Semester>>() {
+
+            @Override
+            protected List<Semester> doInBackground(Void... voids) {
+                return database.semesterDao().getAll();
+            }
+
+            @Override
+            protected void onPostExecute(List<Semester> semesters) {
+                adapter.update(semesters);
             }
         }.execute();
     }

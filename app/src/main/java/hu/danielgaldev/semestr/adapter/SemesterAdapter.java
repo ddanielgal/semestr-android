@@ -31,6 +31,7 @@ public class SemesterAdapter
         View itemView = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.item_semester_list, parent, false);
+
         return new SemesterViewHolder(itemView);
     }
 
