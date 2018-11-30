@@ -11,6 +11,9 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.NumberPicker;
+
+import java.awt.font.NumericShaper;
 
 import hu.danielgaldev.semestr.R;
 import hu.danielgaldev.semestr.model.pojo.Semester;
@@ -18,7 +21,7 @@ import hu.danielgaldev.semestr.model.pojo.Semester;
 public class NewSemesterDialogFragment extends DialogFragment {
 
     public static final String TAG = "NewSemesterDialogFragment";
-    private EditText numberEditText;
+    private NumberPicker numberPicker;
     private EditText universityEditText;
     private EditText degreeEditText;
 
@@ -41,24 +44,17 @@ public class NewSemesterDialogFragment extends DialogFragment {
 
     private View getContentView() {
         View contentView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_new_semester, null);
-        numberEditText = contentView.findViewById(R.id.SemesterNumberEditText);
+        numberPicker = contentView.findViewById(R.id.SemesterNumberPicker);
+        numberPicker.setMinValue(1);
+        numberPicker.setMaxValue(30);
         universityEditText = contentView.findViewById(R.id.UniversityEditText);
         degreeEditText = contentView.findViewById(R.id.DegreeEditText);
         return contentView;
     }
 
-    private boolean isValid() {
-        try {
-            int i = Integer.parseInt(numberEditText.getText().toString());
-        } catch (NumberFormatException | NullPointerException nfe) {
-            return false;
-        }
-        return true;
-    }
-
     private Semester getSemester() {
         Semester semester = new Semester();
-        semester.number = Integer.parseInt(numberEditText.getText().toString());
+        semester.number = numberPicker.getValue();
         semester.university = universityEditText.getText().toString();
         semester.degree = degreeEditText.getText().toString();
         return semester;
@@ -73,9 +69,7 @@ public class NewSemesterDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if (isValid()) {
-                            listener.onSemesterCreated(getSemester());
-                    }
+                        listener.onSemesterCreated(getSemester());
                     }
                 })
                 .setNegativeButton(R.string.cancel, null)

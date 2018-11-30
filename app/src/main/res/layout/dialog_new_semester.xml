@@ -10,8 +10,8 @@
         android:layout_height="wrap_content"
         android:text="@string/semester_number"/>
 
-    <EditText
-        android:id="@+id/SemesterNumberEditText"
+    <NumberPicker
+        android:id="@+id/SemesterNumberPicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
