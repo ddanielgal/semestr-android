@@ -11,4 +11,5 @@
     <string name="subject_name">Name</string>
     <string name="credits">Credits</string>
     <string name="new_subject">Add new subject</string>
+    <string name="credits_text">credits</string>
 </resources>

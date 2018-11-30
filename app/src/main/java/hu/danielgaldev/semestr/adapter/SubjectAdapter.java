@@ -35,7 +35,12 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     public void onBindViewHolder(@NonNull SubjectViewHolder holder, int i) {
         Subject sub = subjects.get(i);
         holder.subjectNameTextView.setText(sub.name);
-        holder.creditsTextView.setText(Integer.toString(sub.credits));
+        holder.creditsTextView.setText(
+                new StringBuilder()
+                        .append(sub.credits)
+                        .append(" ")
+                        .append(R.string.credits_text)
+        );
     }
 
     @Override
@@ -47,8 +52,6 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
 
         TextView subjectNameTextView;
         TextView creditsTextView;
-
-        Subject sub;
 
         public SubjectViewHolder(@NonNull View itemView) {
             super(itemView);
