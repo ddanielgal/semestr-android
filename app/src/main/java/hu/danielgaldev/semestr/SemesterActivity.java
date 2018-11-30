@@ -2,6 +2,7 @@ package hu.danielgaldev.semestr;
 
 import android.annotation.SuppressLint;
 import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +13,7 @@ import android.view.View;
 
 import java.util.List;
 
+import hu.danielgaldev.semestr.adapter.tools.RecyclerItemClickListener;
 import hu.danielgaldev.semestr.model.SemestrDatabase;
 import hu.danielgaldev.semestr.model.pojo.Semester;
 import hu.danielgaldev.semestr.fragments.dialog.NewSemesterDialogFragment;
@@ -48,6 +50,19 @@ public class SemesterActivity extends AppCompatActivity
         loadItemsInBackground();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+        Context context = recyclerView.getContext();
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(context, recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        // Start new activity
+                        
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+
+                    }
+                })
+        );
     }
 
     private void initAddSemesterButton() {
