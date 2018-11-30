@@ -5,8 +5,7 @@ import android.arch.persistence.room.PrimaryKey;
 
 @Entity
 public class Semester {
-    @PrimaryKey(autoGenerate = true)
-    public Long id;
+    @PrimaryKey(autoGenerate = true) public Long id;
     public int number;
     public String university;
     public String degree;

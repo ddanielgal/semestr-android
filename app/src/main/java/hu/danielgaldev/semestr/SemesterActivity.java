@@ -56,7 +56,8 @@ public class SemesterActivity extends AppCompatActivity
                     @Override public void onItemClick(View view, int position) {
                         // Start new activity
                         Intent myIntent = new Intent(SemesterActivity.this, SubjectActivity.class);
-                        myIntent.putExtra("semesterId", Long.toString(adapter.getItemId(position)));
+                        Semester currentSemester = (Semester) adapter.getItem(position);
+                        myIntent.putExtra("semesterId", currentSemester.id.toString());
                         SemesterActivity.this.startActivity(myIntent);
                     }
 

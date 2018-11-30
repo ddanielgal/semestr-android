@@ -51,6 +51,10 @@ public class SemesterAdapter
         return items.size();
     }
 
+    public Semester getItem(int position) {
+        return items.get(position);
+    }
+
     public interface SemesterItemClickListener{
         void onItemChanged(Semester item);
     }

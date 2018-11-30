@@ -12,8 +12,6 @@ import hu.danielgaldev.semestr.model.pojo.Subject;
 
 @Dao
 public interface SubjectDao {
-    @Query("SELECT * FROM subject")
-    List<Subject> getAll();
 
     @Query("SELECT * FROM subject WHERE semesterId=:semesterId")
     List<Subject> getSubjectsForSemester(final Long semesterId);

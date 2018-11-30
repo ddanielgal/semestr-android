@@ -35,7 +35,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     public void onBindViewHolder(@NonNull SubjectViewHolder holder, int i) {
         Subject sub = subjects.get(i);
         holder.subjectNameTextView.setText(sub.name);
-        holder.creditsTextView.setText(sub.credits);
+        holder.creditsTextView.setText(Integer.toString(sub.credits));
     }
 
     @Override
