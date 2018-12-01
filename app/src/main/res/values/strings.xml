@@ -12,4 +12,15 @@
     <string name="credits">Credits</string>
     <string name="new_subject">Add new subject</string>
     <string name="credits_text">credits</string>
+    <string-array name="university_items">
+        <item>BME</item>
+        <item>ELTE</item>
+        <item>CEU</item>
+    </string-array>
+    <string-array name="degree_items">
+        <item>Software Engineering BSc</item>
+        <item>Electrical Engineering BSc</item>
+        <item>Software Engineering MSc</item>
+        <item>Electrical Engineering MSc</item>
+    </string-array>
 </resources>

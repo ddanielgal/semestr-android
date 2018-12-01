@@ -1,5 +1,6 @@
 package hu.danielgaldev.semestr.adapter;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,13 +36,14 @@ public class SemesterAdapter
         return new SemesterViewHolder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull SemesterViewHolder holder, int position) {
         Semester sem = items.get(position);
         String semNumberText = holder.itemView.getContext().getString(R.string.sem_number_text);
         holder.semesterNumberTextView.setText(sem.number + semNumberText);
-        holder.universityTextView.setText(sem.university);
-        holder.degreeTextView.setText(sem.degree);
+        holder.universityTextView.setText(sem.university.toString());
+        holder.degreeTextView.setText(sem.degree.toString());
 
         holder.semester = sem;
     }

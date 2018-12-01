@@ -39,7 +39,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
                 new StringBuilder()
                         .append(sub.credits)
                         .append(" ")
-                        .append(R.string.credits_text)
+                        .append(holder.itemView.getContext().getString(R.string.credits_text))
         );
     }
 
