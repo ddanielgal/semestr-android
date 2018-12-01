@@ -63,6 +63,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
             super(itemView);
             subjectNameTextView = itemView.findViewById(R.id.SubjectNameTextView);
             creditsTextView = itemView.findViewById(R.id.CreditsTextView);
+            itemView.setOnClickListener(this);
         }
 
         @Override

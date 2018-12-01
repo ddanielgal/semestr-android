@@ -39,6 +39,8 @@ public class RequirementsActivity extends AppCompatActivity {
         semesterId = Long.parseLong(intent.getStringExtra("semesterId"));
         subjectId = Long.parseLong(intent.getStringExtra("subjectId"));
 
+        database = SemestrDatabase.getInstance(getApplicationContext());
+
         initRecyclerView();
     }
 
