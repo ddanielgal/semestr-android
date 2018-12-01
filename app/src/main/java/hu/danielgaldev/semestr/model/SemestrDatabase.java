@@ -26,7 +26,7 @@ import hu.danielgaldev.semestr.model.pojo.Subject;
 
 @Database(
         entities = {Semester.class, Subject.class, RequirementType.class, Requirement.class},
-        version = 2,
+        version = 1,
         exportSchema = false
 )
 
@@ -51,58 +51,56 @@ public abstract class SemestrDatabase extends RoomDatabase {
         return Room.databaseBuilder(context,
                 SemestrDatabase.class,
                 "semestr-database")
-                .addCallback(new Callback() {
+                .addCallback(new RoomDatabase.Callback() {
                     @Override
                     public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                        super.onCreate(db);
                         Executors.newSingleThreadScheduledExecutor().execute(new Runnable() {
                             @Override
                             public void run() {
-                                SemestrDatabase instance = getInstance(context);
+                                SemestrDatabase db = getInstance(context);
 
-                                // Pre-populate database
-
-                                Long semId = instance.semesterDao().insert(
+                                Long semId = db.semesterDao().insert(
                                         new Semester(1, Semester.University.BME, Semester.Degree.BINFO)
                                 );
 
                                 // Subjects
                                 List<Long> subjectIds = new ArrayList<>();
-                                subjectIds.add(instance.subjectDao().insert(new Subject("Prog1",6, semId)));
-                                subjectIds.add(instance.subjectDao().insert(new Subject("Bsz1",4, semId)));
-                                subjectIds.add(instance.subjectDao().insert(new Subject("Anal1",5, semId)));
+                                subjectIds.add(db.subjectDao().insert(new Subject("Prog1",6, semId)));
+                                subjectIds.add(db.subjectDao().insert(new Subject("Bsz1",4, semId)));
+                                subjectIds.add(db.subjectDao().insert(new Subject("Anal1",5, semId)));
 
                                 // Requirement types
                                 List<Long> reqTypeIds = new ArrayList<>();
-                                reqTypeIds.add(instance.reqTypeDao().insert(new RequirementType("Homework",7)));
-                                reqTypeIds.add(instance.reqTypeDao().insert(new RequirementType("ZH",7)));
-                                reqTypeIds.add(instance.reqTypeDao().insert(new RequirementType("Labor",2)));
-                                reqTypeIds.add(instance.reqTypeDao().insert(new RequirementType("Gyak",1)));
-                                reqTypeIds.add(instance.reqTypeDao().insert(new RequirementType("Vizsga",14)));
+                                reqTypeIds.add(db.reqTypeDao().insert(new RequirementType("Homework",7)));
+                                reqTypeIds.add(db.reqTypeDao().insert(new RequirementType("ZH",7)));
+                                reqTypeIds.add(db.reqTypeDao().insert(new RequirementType("Labor",2)));
+                                reqTypeIds.add(db.reqTypeDao().insert(new RequirementType("Gyak",1)));
+                                reqTypeIds.add(db.reqTypeDao().insert(new RequirementType("Vizsga",14)));
 
                                 // Requirements
                                 // Prog1
                                 Date date = new Date(2018, 12, 1);
                                 for (int i = 1; i < 8; i++) {
-                                    instance.reqDao().insert(new Requirement("Labor " + i, date, reqTypeIds.get(2), subjectIds.get(0)));
+                                    db.reqDao().insert(new Requirement("Labor " + i, date, reqTypeIds.get(2), subjectIds.get(0)));
                                 }
                                 for (int i = 1; i < 13; i++) {
-                                    instance.reqDao().insert(new Requirement("Gyakorlat " + i, date, reqTypeIds.get(3), subjectIds.get(0)));
+                                    db.reqDao().insert(new Requirement("Gyakorlat " + i, date, reqTypeIds.get(3), subjectIds.get(0)));
                                 }
-                                instance.reqDao().insert(new Requirement("ZH1", date, reqTypeIds.get(1), subjectIds.get(0)));
-                                instance.reqDao().insert(new Requirement("ZH2", date, reqTypeIds.get(1), subjectIds.get(0)));
-                                instance.reqDao().insert(new Requirement("NHF", date, reqTypeIds.get(0), subjectIds.get(0)));
+                                db.reqDao().insert(new Requirement("ZH1", date, reqTypeIds.get(1), subjectIds.get(0)));
+                                db.reqDao().insert(new Requirement("ZH2", date, reqTypeIds.get(1), subjectIds.get(0)));
+                                db.reqDao().insert(new Requirement("NHF", date, reqTypeIds.get(0), subjectIds.get(0)));
                                 // Bsz1
-                                instance.reqDao().insert(new Requirement("ZH1", date, reqTypeIds.get(1), subjectIds.get(1)));
-                                instance.reqDao().insert(new Requirement("ZH2", date, reqTypeIds.get(1), subjectIds.get(1)));
-                                instance.reqDao().insert(new Requirement("Vizsga", date, reqTypeIds.get(4), subjectIds.get(1)));
+                                db.reqDao().insert(new Requirement("ZH1", date, reqTypeIds.get(1), subjectIds.get(1)));
+                                db.reqDao().insert(new Requirement("ZH2", date, reqTypeIds.get(1), subjectIds.get(1)));
+                                db.reqDao().insert(new Requirement("Vizsga", date, reqTypeIds.get(4), subjectIds.get(1)));
                                 // Anal1
                                 for (int i = 1; i < 13; i++) {
-                                    instance.reqDao().insert(new Requirement("Gyakorlat " + i, date, reqTypeIds.get(3), subjectIds.get(2)));
+                                    db.reqDao().insert(new Requirement("Gyakorlat " + i, date, reqTypeIds.get(3), subjectIds.get(2)));
                                 }
-                                instance.reqDao().insert(new Requirement("ZH1", date, reqTypeIds.get(1), subjectIds.get(2)));
-                                instance.reqDao().insert(new Requirement("ZH2", date, reqTypeIds.get(1), subjectIds.get(2)));
-                                instance.reqDao().insert(new Requirement("Vizsga", date, reqTypeIds.get(4), subjectIds.get(2)));
+                                db.reqDao().insert(new Requirement("ZH1", date, reqTypeIds.get(1), subjectIds.get(2)));
+                                db.reqDao().insert(new Requirement("ZH2", date, reqTypeIds.get(1), subjectIds.get(2)));
+                                db.reqDao().insert(new Requirement("Vizsga", date, reqTypeIds.get(4), subjectIds.get(2)));
+
                             }
                         });
                     }
