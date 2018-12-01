@@ -13,16 +13,19 @@ import java.util.List;
 import hu.danielgaldev.semestr.R;
 import hu.danielgaldev.semestr.model.SemestrDatabase;
 import hu.danielgaldev.semestr.model.pojo.Requirement;
+import hu.danielgaldev.semestr.model.pojo.RequirementType;
 
 public class RequirementAdapter
         extends RecyclerView.Adapter<RequirementAdapter.RequirementViewHolder> {
 
 
     private final List<Requirement> items;
+    private final List<RequirementType> requirementTypes;
     private final SemestrDatabase db;
 
     public RequirementAdapter() {
         this.items = new ArrayList<>();
+        this.requirementTypes = new ArrayList<>();
         this.db = SemestrDatabase.getInstance(null);
     }
 
@@ -42,7 +45,7 @@ public class RequirementAdapter
         holder.requirementNameTV.setText(req.name);
         holder.requirementDeadlineTV.setText(req.deadline.toString());
         holder.requirementTypeTV.setText(
-                db.reqTypeDao().getById(req.requirementTypeId).name
+                findReqTypeById(req.requirementTypeId).name
         );
     }
 
@@ -74,5 +77,18 @@ public class RequirementAdapter
         items.clear();
         items.addAll(req);
         notifyDataSetChanged();
+    }
+
+    public void updateReqTypes(List<RequirementType> reqTypes) {
+        requirementTypes.clear();
+        requirementTypes.addAll(reqTypes);
+        notifyDataSetChanged();
+    }
+
+    private RequirementType findReqTypeById(Long id) {
+        for (RequirementType rt : requirementTypes) {
+            if (rt.id == id) return rt;
+        }
+        return null;
     }
 }

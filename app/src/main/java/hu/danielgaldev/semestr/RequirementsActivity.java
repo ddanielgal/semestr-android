@@ -18,6 +18,7 @@ import hu.danielgaldev.semestr.adapter.RequirementAdapter;
 import hu.danielgaldev.semestr.adapter.SubjectAdapter;
 import hu.danielgaldev.semestr.model.SemestrDatabase;
 import hu.danielgaldev.semestr.model.pojo.Requirement;
+import hu.danielgaldev.semestr.model.pojo.RequirementType;
 import hu.danielgaldev.semestr.model.pojo.Subject;
 
 public class RequirementsActivity extends AppCompatActivity {
@@ -48,6 +49,7 @@ public class RequirementsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.RequirementRecyclerView);
         adapter = new RequirementAdapter();
         loadItemsInBackground();
+        loadRequirementTypes();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
@@ -64,6 +66,21 @@ public class RequirementsActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(List<Requirement> reqs) {
                 adapter.update(reqs);
+            }
+        }.execute();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void loadRequirementTypes() {
+        new AsyncTask<Void, Void, List<RequirementType>>() {
+
+            @Override
+            protected List<RequirementType> doInBackground(Void... voids) {
+                return database.reqTypeDao().getAll();
+            }
+
+            protected void onPostExecute(List<RequirementType> reqTypes) {
+                adapter.updateReqTypes(reqTypes);
             }
         }.execute();
     }
