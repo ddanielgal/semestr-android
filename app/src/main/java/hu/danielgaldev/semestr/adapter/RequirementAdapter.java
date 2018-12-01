@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hu.danielgaldev.semestr.R;
-import hu.danielgaldev.semestr.model.DatabaseClient;
 import hu.danielgaldev.semestr.model.SemestrDatabase;
 import hu.danielgaldev.semestr.model.pojo.Requirement;
 
@@ -24,7 +23,7 @@ public class RequirementAdapter
 
     public RequirementAdapter() {
         this.items = new ArrayList<>();
-        this.db = DatabaseClient.getInstance(null).getDb();
+        this.db = SemestrDatabase.getInstance(null);
     }
 
     @NonNull

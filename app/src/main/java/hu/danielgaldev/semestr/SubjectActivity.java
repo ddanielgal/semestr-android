@@ -1,13 +1,10 @@
 package hu.danielgaldev.semestr;
 
 import android.annotation.SuppressLint;
-import android.arch.persistence.room.Room;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,18 +13,14 @@ import android.view.View;
 
 import java.util.List;
 
-import hu.danielgaldev.semestr.adapter.SemesterAdapter;
 import hu.danielgaldev.semestr.adapter.SubjectAdapter;
-import hu.danielgaldev.semestr.adapter.tools.RecyclerItemClickListener;
-import hu.danielgaldev.semestr.fragments.dialog.NewSemesterDialogFragment;
 import hu.danielgaldev.semestr.fragments.dialog.NewSubjectDialogFragment;
-import hu.danielgaldev.semestr.model.DatabaseClient;
 import hu.danielgaldev.semestr.model.SemestrDatabase;
-import hu.danielgaldev.semestr.model.pojo.Semester;
 import hu.danielgaldev.semestr.model.pojo.Subject;
 
 public class SubjectActivity extends AppCompatActivity
-implements NewSubjectDialogFragment.NewSubjectDialogListener {
+implements NewSubjectDialogFragment.NewSubjectDialogListener,
+           SubjectAdapter.SubjectClickListener {
 
     private Long semesterId;
     private RecyclerView recyclerView;
@@ -45,7 +38,7 @@ implements NewSubjectDialogFragment.NewSubjectDialogListener {
         Intent intent = getIntent();
         semesterId = Long.parseLong(intent.getStringExtra("semesterId"));
 
-        database = DatabaseClient.getInstance(getApplicationContext()).getDb();
+        database = SemestrDatabase.getInstance(getApplicationContext());
 
         initRecyclerView();
         initAddSubjectButton();
@@ -53,7 +46,7 @@ implements NewSubjectDialogFragment.NewSubjectDialogListener {
 
     private void initRecyclerView() {
         recyclerView = findViewById(R.id.SubjectRecyclerView);
-        adapter = new SubjectAdapter();
+        adapter = new SubjectAdapter(this);
         loadItemsInBackground();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -107,4 +100,11 @@ implements NewSubjectDialogFragment.NewSubjectDialogListener {
         }.execute();
     }
 
+    @Override
+    public void onItemClicked(Subject subject) {
+        Intent myIntent = new Intent(SubjectActivity.this, RequirementsActivity.class);
+        myIntent.putExtra("subjectId", subject.id.toString());
+        myIntent.putExtra("semesterId", semesterId.toString());
+        SubjectActivity.this.startActivity(myIntent);
+    }
 }

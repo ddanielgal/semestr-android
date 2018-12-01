@@ -23,4 +23,5 @@
         <item>Software Engineering MSc</item>
         <item>Electrical Engineering MSc</item>
     </string-array>
+    <string name="title_activity_requirements">RequirementsActivity</string>
 </resources>

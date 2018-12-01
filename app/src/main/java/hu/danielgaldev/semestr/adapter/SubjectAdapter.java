@@ -16,9 +16,11 @@ import hu.danielgaldev.semestr.model.pojo.Subject;
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder> {
 
     private final List<Subject> subjects;
+    private SubjectClickListener listener;
 
-    public SubjectAdapter() {
+    public SubjectAdapter(SubjectClickListener listener) {
         subjects = new ArrayList<>();
+        this.listener = listener;
     }
 
     @NonNull
@@ -41,6 +43,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
                         .append(" ")
                         .append(holder.itemView.getContext().getString(R.string.credits_text))
         );
+        holder.sub = sub;
     }
 
     @Override
@@ -48,15 +51,23 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
         return subjects.size();
     }
 
-    class SubjectViewHolder extends RecyclerView.ViewHolder {
+    class SubjectViewHolder extends RecyclerView.ViewHolder
+    implements View.OnClickListener {
 
         TextView subjectNameTextView;
         TextView creditsTextView;
+
+        Subject sub;
 
         public SubjectViewHolder(@NonNull View itemView) {
             super(itemView);
             subjectNameTextView = itemView.findViewById(R.id.SubjectNameTextView);
             creditsTextView = itemView.findViewById(R.id.CreditsTextView);
+        }
+
+        @Override
+        public void onClick(View v) {
+            listener.onItemClicked(sub);
         }
     }
 
@@ -69,5 +80,9 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
         subjects.clear();
         subjects.addAll(subject);
         notifyDataSetChanged();
+    }
+
+    public interface SubjectClickListener {
+        void onItemClicked(Subject subject);
     }
 }

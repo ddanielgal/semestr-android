@@ -55,4 +55,11 @@ public class Semester {
     public University university;
     public Degree degree;
 
+    public Semester() {}
+
+    public Semester(int number, University university, Degree degree) {
+        this.number = number;
+        this.university = university;
+        this.degree = degree;
+    }
 }

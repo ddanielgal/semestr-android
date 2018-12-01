@@ -6,20 +6,27 @@ import android.arch.persistence.room.PrimaryKey;
 
 import java.util.Date;
 
-@Entity(foreignKeys = @ForeignKey(entity = RequirementType.class,
+@Entity(foreignKeys = {
+        @ForeignKey(entity = RequirementType.class,
         parentColumns = "id",
-        childColumns = "requirementTypeId"))
+        childColumns = "requirementTypeId"),
+        @ForeignKey(entity = Subject.class,
+                parentColumns = "id",
+                childColumns = "subjectId")
+})
 public class Requirement {
 
     @PrimaryKey(autoGenerate = true) public Long id;
     public String name;
     public Date deadline;
     public Long requirementTypeId;
+    public Long subjectId;
 
-    public Requirement(String name, Date deadline, Long requirementTypeId) {
+    public Requirement(String name, Date deadline, Long requirementTypeId, Long subjectId) {
         this.requirementTypeId = requirementTypeId;
         this.deadline = deadline;
         this.name = name;
+        this.subjectId = subjectId;
     }
 
 }

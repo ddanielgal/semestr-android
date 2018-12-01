@@ -1,8 +1,6 @@
 package hu.danielgaldev.semestr;
 
 import android.annotation.SuppressLint;
-import android.arch.persistence.room.Room;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,14 +12,10 @@ import android.view.View;
 
 import java.util.List;
 
-import hu.danielgaldev.semestr.adapter.tools.RecyclerItemClickListener;
-import hu.danielgaldev.semestr.fragments.dialog.NewSubjectDialogFragment;
-import hu.danielgaldev.semestr.model.DatabaseClient;
 import hu.danielgaldev.semestr.model.SemestrDatabase;
 import hu.danielgaldev.semestr.model.pojo.Semester;
 import hu.danielgaldev.semestr.fragments.dialog.NewSemesterDialogFragment;
 import hu.danielgaldev.semestr.adapter.SemesterAdapter;
-import hu.danielgaldev.semestr.model.pojo.Subject;
 
 
 public class SemesterActivity extends AppCompatActivity
@@ -38,7 +32,7 @@ public class SemesterActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_semester);
 
-        database = DatabaseClient.getInstance(getApplicationContext()).getDb();
+        database = SemestrDatabase.getInstance(getApplicationContext());
 
         initRecyclerView();
         initAddSemesterButton();

@@ -19,6 +19,10 @@
         <activity
             android:name=".SubjectActivity"
             android:label="@string/title_activity_subject"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RequirementsActivity"
+            android:label="@string/title_activity_requirements"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
