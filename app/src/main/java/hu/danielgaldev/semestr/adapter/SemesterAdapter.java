@@ -64,10 +64,11 @@ public class SemesterAdapter
     }
 
     public interface SemesterItemClickListener{
-        void onItemChanged(Semester item);
+        void onItemClicked(Semester semester);
     }
 
-    class SemesterViewHolder extends RecyclerView.ViewHolder {
+    class SemesterViewHolder extends RecyclerView.ViewHolder
+        implements View.OnClickListener {
 
         TextView semesterNumberTextView;
         TextView universityTextView;
@@ -80,6 +81,12 @@ public class SemesterAdapter
             semesterNumberTextView = itemView.findViewById(R.id.SemesterNumberTextView);
             universityTextView = itemView.findViewById(R.id.UniversityTextView);
             degreeTextView = itemView.findViewById(R.id.DegreeTextView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            listener.onItemClicked(semester);
         }
 
     }

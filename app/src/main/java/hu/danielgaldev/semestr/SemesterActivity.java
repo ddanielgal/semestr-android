@@ -50,22 +50,6 @@ public class SemesterActivity extends AppCompatActivity
         loadItemsInBackground();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-        Context context = recyclerView.getContext();
-        recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(context, recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
-                        // Start new activity
-                        Intent myIntent = new Intent(SemesterActivity.this, SubjectActivity.class);
-                        Semester currentSemester = (Semester) adapter.getItem(position);
-                        myIntent.putExtra("semesterId", currentSemester.id.toString());
-                        SemesterActivity.this.startActivity(myIntent);
-                    }
-
-                    @Override public void onLongItemClick(View view, int position) {
-
-                    }
-                })
-        );
     }
 
     private void initAddSemesterButton() {
@@ -113,8 +97,10 @@ public class SemesterActivity extends AppCompatActivity
     }
 
     @Override
-    public void onItemChanged(Semester item) {
-
+    public void onItemClicked(Semester semester) {
+        Intent myIntent = new Intent(SemesterActivity.this, SubjectActivity.class);
+        myIntent.putExtra("semesterId", semester.id.toString());
+        SemesterActivity.this.startActivity(myIntent);
     }
 
 }
