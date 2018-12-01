@@ -42,8 +42,14 @@ public class SemesterAdapter
         Semester sem = items.get(position);
         String semNumberText = holder.itemView.getContext().getString(R.string.sem_number_text);
         holder.semesterNumberTextView.setText(sem.number + semNumberText);
-        holder.universityTextView.setText(sem.university.toString());
-        holder.degreeTextView.setText(sem.degree.toString());
+        holder.universityTextView.setText(
+                holder.itemView.getResources().getStringArray(R.array.university_items)
+                        [Semester.University.toInt(sem.university)]
+        );
+        holder.degreeTextView.setText(
+                holder.itemView.getResources().getStringArray(R.array.degree_items)
+                        [Semester.Degree.toInt(sem.degree)]
+        );
 
         holder.semester = sem;
     }
