@@ -38,7 +38,7 @@ public class NewSemesterDialogFragment extends DialogFragment {
         if (activity instanceof NewSemesterDialogListener) {
             listener = (NewSemesterDialogListener) activity;
         } else {
-            throw new RuntimeException("Activity must implement the NewShoppingItemDialogListener interface!");
+            throw new RuntimeException("Activity must implement the NewSemesterDialogListener interface!");
         }
     }
 

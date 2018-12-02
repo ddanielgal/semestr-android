@@ -16,12 +16,14 @@ import java.util.List;
 
 import hu.danielgaldev.semestr.adapter.RequirementAdapter;
 import hu.danielgaldev.semestr.adapter.SubjectAdapter;
+import hu.danielgaldev.semestr.fragments.dialog.NewReqTypeDialogFragment;
 import hu.danielgaldev.semestr.model.SemestrDatabase;
 import hu.danielgaldev.semestr.model.pojo.Requirement;
 import hu.danielgaldev.semestr.model.pojo.RequirementType;
 import hu.danielgaldev.semestr.model.pojo.Subject;
 
-public class RequirementsActivity extends AppCompatActivity {
+public class RequirementsActivity extends AppCompatActivity
+implements NewReqTypeDialogFragment.NewReqTypeDialogListener {
 
     private Long semesterId;
     private Long subjectId;
@@ -43,6 +45,17 @@ public class RequirementsActivity extends AppCompatActivity {
         database = SemestrDatabase.getInstance(getApplicationContext());
 
         initRecyclerView();
+        initAddReqTypeButton();
+    }
+
+    private void initAddReqTypeButton() {
+        com.getbase.floatingactionbutton.FloatingActionButton fab = findViewById(R.id.NewRequirementTypeButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new NewReqTypeDialogFragment().show(getSupportFragmentManager(), NewReqTypeDialogFragment.TAG);
+            }
+        });
     }
 
     private void initRecyclerView() {
@@ -85,4 +98,16 @@ public class RequirementsActivity extends AppCompatActivity {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
+    @Override
+    public void onReqTypeCreated(final RequirementType reqType) {
+        new AsyncTask<Void, Void, RequirementType>() {
+
+            @Override
+            protected RequirementType doInBackground(Void... voids) {
+                reqType.id = database.reqTypeDao().insert(reqType);
+                return reqType;
+            }
+        }.execute();
+    }
 }

@@ -28,14 +28,14 @@
         fab:fab_labelStyle="@style/menu_labels_style">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/action_a"
+            android:id="@+id/NewRequirementButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_title="@string/requirement"
             fab:fab_icon="@drawable/ic_add_white_36dp"/>
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/action_b"
+            android:id="@+id/NewRequirementTypeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_title="@string/requirement_type"

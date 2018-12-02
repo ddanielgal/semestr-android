@@ -27,4 +27,7 @@
     <string name="na">N/A</string>
     <string name="requirement">Requirement</string>
     <string name="requirement_type">Requirement type</string>
+    <string name="add_new_requirement_type">Add new requirement type</string>
+    <string name="name">Name</string>
+    <string name="weight">Weight</string>
 </resources>
