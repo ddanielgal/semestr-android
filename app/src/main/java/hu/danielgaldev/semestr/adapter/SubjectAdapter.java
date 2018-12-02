@@ -1,5 +1,7 @@
 package hu.danielgaldev.semestr.adapter;
 
+import android.annotation.SuppressLint;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,18 +10,25 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import hu.danielgaldev.semestr.R;
+import hu.danielgaldev.semestr.model.SemestrDatabase;
+import hu.danielgaldev.semestr.model.pojo.Requirement;
 import hu.danielgaldev.semestr.model.pojo.Subject;
 
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder> {
 
     private final List<Subject> subjects;
+    private HashMap<Subject, List<Requirement>> subToReqsMap;
     private SubjectClickListener listener;
+
+    private SemestrDatabase db;
 
     public SubjectAdapter(SubjectClickListener listener) {
         subjects = new ArrayList<>();
+        subToReqsMap = new HashMap<>();
         this.listener = listener;
     }
 
@@ -30,7 +39,25 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
                 .from(viewGroup.getContext())
                 .inflate(R.layout.item_subject_list, viewGroup, false);
 
+        db = SemestrDatabase.getInstance(viewGroup.getContext());
+
         return new SubjectViewHolder(itemView);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void loadRequirements(final Subject subject) {
+        new AsyncTask<Void, Void, List<Requirement>>() {
+
+            @Override
+            protected List<Requirement> doInBackground(Void... voids) {
+                return db.reqDao().getRequirementsForSubject(subject.id);
+            }
+
+            @Override
+            protected void onPostExecute(List<Requirement> reqs) {
+                subToReqsMap.put(subject, reqs);
+            }
+        }.execute();
     }
 
     @Override
@@ -75,6 +102,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     public void addItem(Subject subject) {
         subjects.add(subject);
         notifyItemInserted(subjects.size() - 1);
+        loadRequirements(subject);
     }
 
     public void update(List<Subject> subject) {
