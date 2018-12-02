@@ -17,13 +17,15 @@ import java.util.List;
 import hu.danielgaldev.semestr.adapter.RequirementAdapter;
 import hu.danielgaldev.semestr.adapter.SubjectAdapter;
 import hu.danielgaldev.semestr.fragments.dialog.NewReqTypeDialogFragment;
+import hu.danielgaldev.semestr.fragments.dialog.NewRequirementDialogFragment;
 import hu.danielgaldev.semestr.model.SemestrDatabase;
 import hu.danielgaldev.semestr.model.pojo.Requirement;
 import hu.danielgaldev.semestr.model.pojo.RequirementType;
 import hu.danielgaldev.semestr.model.pojo.Subject;
 
 public class RequirementsActivity extends AppCompatActivity
-implements NewReqTypeDialogFragment.NewReqTypeDialogListener {
+implements NewReqTypeDialogFragment.NewReqTypeDialogListener,
+        NewRequirementDialogFragment.NewRequirementDialogListener {
 
     private Long semesterId;
     private Long subjectId;
@@ -46,6 +48,21 @@ implements NewReqTypeDialogFragment.NewReqTypeDialogListener {
 
         initRecyclerView();
         initAddReqTypeButton();
+        initAddReqButton();
+    }
+
+    private void initAddReqButton() {
+        com.getbase.floatingactionbutton.FloatingActionButton fab = findViewById(R.id.NewRequirementButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NewRequirementDialogFragment frag = new NewRequirementDialogFragment();
+                Bundle bundle = new Bundle();
+                bundle.putLong("subjectId", subjectId);
+                frag.setArguments(bundle);
+                frag.show(getSupportFragmentManager(), NewReqTypeDialogFragment.TAG);
+            }
+        });
     }
 
     private void initAddReqTypeButton() {
@@ -107,6 +124,24 @@ implements NewReqTypeDialogFragment.NewReqTypeDialogListener {
             protected RequirementType doInBackground(Void... voids) {
                 reqType.id = database.reqTypeDao().insert(reqType);
                 return reqType;
+            }
+        }.execute();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    @Override
+    public void onRequirementCreated(final Requirement req) {
+        new AsyncTask<Void, Void, Requirement>() {
+
+            @Override
+            protected Requirement doInBackground(Void... voids) {
+                req.id = database.reqDao().insert(req);
+                return req;
+            }
+
+            @Override
+            protected void onPostExecute(Requirement requirement) {
+                adapter.addItem(requirement);
             }
         }.execute();
     }

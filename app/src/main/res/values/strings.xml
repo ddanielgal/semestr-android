@@ -30,4 +30,7 @@
     <string name="add_new_requirement_type">Add new requirement type</string>
     <string name="name">Name</string>
     <string name="weight">Weight</string>
+    <string name="deadline">Deadline</string>
+    <string name="type">Type</string>
+    <string name="new_requirement">Add new requirement</string>
 </resources>
