@@ -36,4 +36,5 @@
     <string name="task_coming_up">Task coming up!</string>
     <string name="within_3_days">is within 3 days!</string>
     <string name="for_subject">for</string>
+    <string name="details">Details</string>
 </resources>

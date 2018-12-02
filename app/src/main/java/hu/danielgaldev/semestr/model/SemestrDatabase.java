@@ -26,7 +26,7 @@ import hu.danielgaldev.semestr.model.pojo.Subject;
 
 @Database(
         entities = {Semester.class, Subject.class, RequirementType.class, Requirement.class},
-        version = 1,
+        version = 2,
         exportSchema = false
 )
 
@@ -81,25 +81,25 @@ public abstract class SemestrDatabase extends RoomDatabase {
                                 // Prog1
                                 Date date = new Date(2018, 12, 1);
                                 for (int i = 1; i < 8; i++) {
-                                    db.reqDao().insert(new Requirement("Labor " + i, date, reqTypeIds.get(2), subjectIds.get(0)));
+                                    db.reqDao().insert(new Requirement("Labor " + i, date, "", reqTypeIds.get(2), subjectIds.get(0)));
                                 }
                                 for (int i = 1; i < 13; i++) {
-                                    db.reqDao().insert(new Requirement("Gyakorlat " + i, date, reqTypeIds.get(3), subjectIds.get(0)));
+                                    db.reqDao().insert(new Requirement("Gyakorlat " + i, date, "", reqTypeIds.get(3), subjectIds.get(0)));
                                 }
-                                db.reqDao().insert(new Requirement("ZH1", date, reqTypeIds.get(1), subjectIds.get(0)));
-                                db.reqDao().insert(new Requirement("ZH2", date, reqTypeIds.get(1), subjectIds.get(0)));
-                                db.reqDao().insert(new Requirement("NHF", date, reqTypeIds.get(0), subjectIds.get(0)));
+                                db.reqDao().insert(new Requirement("ZH1", date,"", reqTypeIds.get(1), subjectIds.get(0)));
+                                db.reqDao().insert(new Requirement("ZH2", date, "", reqTypeIds.get(1), subjectIds.get(0)));
+                                db.reqDao().insert(new Requirement("NHF", date, "", reqTypeIds.get(0), subjectIds.get(0)));
                                 // Bsz1
-                                db.reqDao().insert(new Requirement("ZH1", date, reqTypeIds.get(1), subjectIds.get(1)));
-                                db.reqDao().insert(new Requirement("ZH2", date, reqTypeIds.get(1), subjectIds.get(1)));
-                                db.reqDao().insert(new Requirement("Vizsga", date, reqTypeIds.get(4), subjectIds.get(1)));
+                                db.reqDao().insert(new Requirement("ZH1", date, "", reqTypeIds.get(1), subjectIds.get(1)));
+                                db.reqDao().insert(new Requirement("ZH2", date, "", reqTypeIds.get(1), subjectIds.get(1)));
+                                db.reqDao().insert(new Requirement("Vizsga", date, "", reqTypeIds.get(4), subjectIds.get(1)));
                                 // Anal1
                                 for (int i = 1; i < 13; i++) {
-                                    db.reqDao().insert(new Requirement("Gyakorlat " + i, date, reqTypeIds.get(3), subjectIds.get(2)));
+                                    db.reqDao().insert(new Requirement("Gyakorlat " + i, date, "", reqTypeIds.get(3), subjectIds.get(2)));
                                 }
-                                db.reqDao().insert(new Requirement("ZH1", date, reqTypeIds.get(1), subjectIds.get(2)));
-                                db.reqDao().insert(new Requirement("ZH2", date, reqTypeIds.get(1), subjectIds.get(2)));
-                                db.reqDao().insert(new Requirement("Vizsga", date, reqTypeIds.get(4), subjectIds.get(2)));
+                                db.reqDao().insert(new Requirement("ZH1", date, "", reqTypeIds.get(1), subjectIds.get(2)));
+                                db.reqDao().insert(new Requirement("ZH2", date, "", reqTypeIds.get(1), subjectIds.get(2)));
+                                db.reqDao().insert(new Requirement("Vizsga", date, "", reqTypeIds.get(4), subjectIds.get(2)));
 
                             }
                         });

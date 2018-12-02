@@ -19,14 +19,16 @@ public class Requirement {
     @PrimaryKey(autoGenerate = true) public Long id;
     public String name;
     public Date deadline;
+    public String details;
     public Long requirementTypeId;
     public Long subjectId;
 
-    public Requirement(String name, Date deadline, Long requirementTypeId, Long subjectId) {
+    public Requirement(String name, Date deadline, String details, Long requirementTypeId, Long subjectId) {
         this.requirementTypeId = requirementTypeId;
         this.deadline = deadline;
         this.name = name;
         this.subjectId = subjectId;
+        this.details = details;
     }
 
 }

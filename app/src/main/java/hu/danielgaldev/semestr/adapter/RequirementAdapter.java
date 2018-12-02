@@ -50,6 +50,7 @@ public class RequirementAdapter
         } else {
             holder.requirementTypeTV.setText(reqType.name);
         }
+        holder.requirementDetailsTV.setText(req.details);
 
     }
 
@@ -63,12 +64,14 @@ public class RequirementAdapter
         TextView requirementNameTV;
         TextView requirementDeadlineTV;
         TextView requirementTypeTV;
+        TextView requirementDetailsTV;
 
         RequirementViewHolder(@NonNull View itemView) {
             super(itemView);
             requirementNameTV = itemView.findViewById(R.id.RequirementNameTextView);
             requirementDeadlineTV = itemView.findViewById(R.id.RequirementDeadlineTextView);
             requirementTypeTV = itemView.findViewById(R.id.RequirementTypeTextView);
+            requirementDetailsTV = itemView.findViewById(R.id.RequirementDetailsTextView);
         }
     }
 

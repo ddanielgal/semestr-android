@@ -9,9 +9,6 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
-import hu.danielgaldev.semestr.model.pojo.Requirement;
-import hu.danielgaldev.semestr.model.pojo.Subject;
-
 public class StudyNotificationService extends Service {
 
     @Override

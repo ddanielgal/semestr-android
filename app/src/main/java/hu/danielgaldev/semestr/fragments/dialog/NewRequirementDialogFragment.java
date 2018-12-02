@@ -33,6 +33,7 @@ public class NewRequirementDialogFragment extends DialogFragment {
     private EditText nameEditText;
     private DatePicker deadlineDatePicker;
     private Spinner requirementTypeSpinner;
+    private EditText detailsEditText;
 
     private HashMap<String, Long> reqTypeMap;
     private SemestrDatabase database;
@@ -89,6 +90,8 @@ public class NewRequirementDialogFragment extends DialogFragment {
         nameEditText = contentView.findViewById(R.id.RequirementNameEditText);
         deadlineDatePicker = contentView.findViewById(R.id.DeadlineDatePicker);
         requirementTypeSpinner = contentView.findViewById(R.id.RequirementTypeSpinner);
+        detailsEditText = contentView.findViewById(R.id.RequirementDetailsEditText);
+
         loadReqTypes();
         return contentView;
     }
@@ -98,6 +101,7 @@ public class NewRequirementDialogFragment extends DialogFragment {
         return new Requirement(
                 nameEditText.getText().toString(),
                 new Date(deadlineDatePicker.getYear(), deadlineDatePicker.getMonth(), deadlineDatePicker.getDayOfMonth()),
+                detailsEditText.getText().toString(),
                 reqTypeMap.get(requirementTypeSpinner.getSelectedItem()),
                 subjectId
         );
