@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,11 +17,13 @@ import java.util.List;
 import hu.danielgaldev.semestr.R;
 import hu.danielgaldev.semestr.model.SemestrDatabase;
 import hu.danielgaldev.semestr.model.pojo.Requirement;
+import hu.danielgaldev.semestr.model.pojo.RequirementType;
 import hu.danielgaldev.semestr.model.pojo.Subject;
 
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder> {
 
     private final List<Subject> subjects;
+    private List<RequirementType> reqTypes;
     private HashMap<Subject, List<Requirement>> subToReqsMap;
     private SubjectClickListener listener;
 
@@ -28,6 +31,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
 
     public SubjectAdapter(SubjectClickListener listener) {
         subjects = new ArrayList<>();
+        reqTypes = new ArrayList<>();
         subToReqsMap = new HashMap<>();
         this.listener = listener;
     }
@@ -40,8 +44,34 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
                 .inflate(R.layout.item_subject_list, viewGroup, false);
 
         db = SemestrDatabase.getInstance(viewGroup.getContext());
+        loadReqTypes();
 
         return new SubjectViewHolder(itemView);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void loadReqTypes() {
+        new AsyncTask<Void, Void, List<RequirementType>>() {
+
+            @Override
+            protected List<RequirementType> doInBackground(Void... voids) {
+                return db.reqTypeDao().getAll();
+            }
+
+            @Override
+            protected void onPostExecute(List<RequirementType> rts) {
+                reqTypes.addAll(rts);
+            }
+        }.execute();
+    }
+
+    private RequirementType getReqTypeById(Long id) {
+        for (RequirementType rt : reqTypes) {
+            if (rt.id == id) {
+                return rt;
+            }
+        }
+        return null;
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -70,7 +100,22 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
                         .append(" ")
                         .append(holder.itemView.getContext().getString(R.string.credits_text))
         );
+        int progress = calculateProgress(sub);
+        holder.bar.setProgress(progress);
         holder.sub = sub;
+    }
+
+    private int calculateProgress(Subject sub) {
+        List<Requirement> reqs = subToReqsMap.get(sub);
+        if (reqs == null) return 0;
+        double sum = 0.0;
+        double completed = 0.0;
+        for (Requirement r : reqs) {
+            int reqWeight = getReqTypeById(r.requirementTypeId).weight;
+            sum += reqWeight;
+            if (r.completed) completed += reqWeight;
+        }
+        return (int) Math.round(completed/sum*100);
     }
 
     @Override
@@ -83,6 +128,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
 
         TextView subjectNameTextView;
         TextView creditsTextView;
+        ProgressBar bar;
 
         Subject sub;
 
@@ -90,6 +136,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
             super(itemView);
             subjectNameTextView = itemView.findViewById(R.id.SubjectNameTextView);
             creditsTextView = itemView.findViewById(R.id.CreditsTextView);
+            bar = itemView.findViewById(R.id.SubjectProgressBar);
             itemView.setOnClickListener(this);
         }
 
