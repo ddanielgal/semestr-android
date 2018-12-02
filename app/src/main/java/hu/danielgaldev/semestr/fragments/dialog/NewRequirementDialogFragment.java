@@ -87,7 +87,7 @@ public class NewRequirementDialogFragment extends DialogFragment {
     private View getContentView() {
         View contentView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_new_requirement, null);
         nameEditText = contentView.findViewById(R.id.RequirementNameEditText);
-        //deadlineDatePicker = contentView.findViewById(R.id.DeadlineDatePicker);
+        deadlineDatePicker = contentView.findViewById(R.id.DeadlineDatePicker);
         requirementTypeSpinner = contentView.findViewById(R.id.RequirementTypeSpinner);
         loadReqTypes();
         return contentView;
