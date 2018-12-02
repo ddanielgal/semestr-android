@@ -59,8 +59,6 @@ public class NewRequirementDialogFragment extends DialogFragment {
             subjectId = bundle.getLong("subjectId", 0);
         }
         database = SemestrDatabase.getInstance(requireContext());
-        reqTypeMap = new HashMap<>();
-        loadReqTypes();
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -73,23 +71,25 @@ public class NewRequirementDialogFragment extends DialogFragment {
             }
 
             protected void onPostExecute(List<RequirementType> reqTypes) {
+                reqTypeMap = new HashMap<>();
                 for (RequirementType r : reqTypes) {
                     reqTypeMap.put(r.name, r.id);
                 }
+                List<String> reqTypeList = new ArrayList<>(reqTypeMap.keySet());
+                requirementTypeSpinner.setAdapter(new ArrayAdapter<String>(
+                        requireContext(),
+                        android.R.layout.simple_spinner_dropdown_item,
+                        reqTypeList));
             }
         }.execute();
     }
 
     private View getContentView() {
-        View contentView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_new_requiement, null);
+        View contentView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_new_requirement, null);
         nameEditText = contentView.findViewById(R.id.RequirementNameEditText);
-        deadlineDatePicker = contentView.findViewById(R.id.DeadlineDatePicker);
+        //deadlineDatePicker = contentView.findViewById(R.id.DeadlineDatePicker);
         requirementTypeSpinner = contentView.findViewById(R.id.RequirementTypeSpinner);
-        List<String> reqTypeList = new ArrayList<>(reqTypeMap.keySet());
-        requirementTypeSpinner.setAdapter(new ArrayAdapter<>(
-                requireContext(),
-                android.R.layout.simple_spinner_dropdown_item,
-                reqTypeList));
+        loadReqTypes();
         return contentView;
     }
 
@@ -98,7 +98,7 @@ public class NewRequirementDialogFragment extends DialogFragment {
         return new Requirement(
                 nameEditText.getText().toString(),
                 new Date(deadlineDatePicker.getYear(), deadlineDatePicker.getMonth(), deadlineDatePicker.getDayOfMonth()),
-                reqTypeMap.get((String)requirementTypeSpinner.getSelectedItem()),
+                reqTypeMap.get(requirementTypeSpinner.getSelectedItem()),
                 subjectId
         );
     }
