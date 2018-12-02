@@ -2,6 +2,7 @@ package hu.danielgaldev.semestr.model.pojo;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.util.Date;
@@ -20,6 +21,7 @@ public class Requirement {
     public String name;
     public Date deadline;
     public String details;
+    public boolean completed;
     public Long requirementTypeId;
     public Long subjectId;
 
@@ -29,6 +31,17 @@ public class Requirement {
         this.name = name;
         this.subjectId = subjectId;
         this.details = details;
+        this.completed = false;
+    }
+
+    @Ignore
+    public Requirement(String name, Date deadline, String details, Long requirementTypeId, Long subjectId, boolean completed) {
+        this.requirementTypeId = requirementTypeId;
+        this.deadline = deadline;
+        this.name = name;
+        this.subjectId = subjectId;
+        this.details = details;
+        this.completed = completed;
     }
 
 }

@@ -29,7 +29,8 @@ import hu.danielgaldev.semestr.model.pojo.Subject;
 
 public class RequirementsActivity extends AppCompatActivity
 implements NewReqTypeDialogFragment.NewReqTypeDialogListener,
-        NewRequirementDialogFragment.NewRequirementDialogListener {
+        NewRequirementDialogFragment.NewRequirementDialogListener,
+        RequirementAdapter.RequirementClickListener {
 
     private Long semesterId;
     private Long subjectId;
@@ -83,7 +84,7 @@ implements NewReqTypeDialogFragment.NewReqTypeDialogListener,
 
     private void initRecyclerView() {
         recyclerView = findViewById(R.id.RequirementRecyclerView);
-        adapter = new RequirementAdapter();
+        adapter = new RequirementAdapter(this);
         loadItemsInBackground();
         loadRequirementTypes();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -165,5 +166,17 @@ implements NewReqTypeDialogFragment.NewReqTypeDialogListener,
 
         AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
         am.set(AlarmManager.RTC_WAKEUP, notificationDate.getTimeInMillis(), pendingIntent);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    @Override
+    public void onRequirementChanged(final Requirement requirement) {
+        new AsyncTask<Void, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Void... voids) {
+                database.reqDao().update(requirement);
+                return true;
+            }
+        }.execute();
     }
 }

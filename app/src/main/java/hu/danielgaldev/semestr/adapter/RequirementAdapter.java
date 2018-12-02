@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,15 +20,21 @@ import hu.danielgaldev.semestr.model.pojo.RequirementType;
 public class RequirementAdapter
         extends RecyclerView.Adapter<RequirementAdapter.RequirementViewHolder> {
 
-
     private final List<Requirement> items;
     private final List<RequirementType> requirementTypes;
     private final SemestrDatabase db;
 
-    public RequirementAdapter() {
+    private RequirementClickListener listener;
+
+    public RequirementAdapter(RequirementClickListener listener) {
+        this.listener = listener;
         this.items = new ArrayList<>();
         this.requirementTypes = new ArrayList<>();
         this.db = SemestrDatabase.getInstance(null);
+    }
+
+    public interface RequirementClickListener {
+        void onRequirementChanged(Requirement requirement);
     }
 
     @NonNull
@@ -51,7 +59,9 @@ public class RequirementAdapter
             holder.requirementTypeTV.setText(reqType.name);
         }
         holder.requirementDetailsTV.setText(req.details);
+        holder.completedCheckBox.setChecked(req.completed);
 
+        holder.requirement = req;
     }
 
     @Override
@@ -65,6 +75,9 @@ public class RequirementAdapter
         TextView requirementDeadlineTV;
         TextView requirementTypeTV;
         TextView requirementDetailsTV;
+        CheckBox completedCheckBox;
+
+        Requirement requirement;
 
         RequirementViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,6 +85,17 @@ public class RequirementAdapter
             requirementDeadlineTV = itemView.findViewById(R.id.RequirementDeadlineTextView);
             requirementTypeTV = itemView.findViewById(R.id.RequirementTypeTextView);
             requirementDetailsTV = itemView.findViewById(R.id.RequirementDetailsTextView);
+            completedCheckBox = itemView.findViewById(R.id.RequirementCompletedCheckBox);
+            completedCheckBox.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (requirement != null) {
+                        requirement.completed = isChecked;
+                        listener.onRequirementChanged(requirement);
+                    }
+                }
+            });
         }
     }
 
