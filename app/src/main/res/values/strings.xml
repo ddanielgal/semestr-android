@@ -24,4 +24,7 @@
         <item>Electrical Engineering MSc</item>
     </string-array>
     <string name="title_activity_requirements">RequirementsActivity</string>
+    <string name="na">N/A</string>
+    <string name="requirement">Requirement</string>
+    <string name="requirement_type">Requirement type</string>
 </resources>

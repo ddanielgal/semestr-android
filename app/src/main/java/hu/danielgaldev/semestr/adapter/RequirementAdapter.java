@@ -44,9 +44,13 @@ public class RequirementAdapter
         Requirement req = items.get(i);
         holder.requirementNameTV.setText(req.name);
         holder.requirementDeadlineTV.setText(req.deadline.toString());
-        holder.requirementTypeTV.setText(
-                findReqTypeById(req.requirementTypeId).name
-        );
+        RequirementType reqType = findReqTypeById(req.requirementTypeId);
+        if (reqType == null) {
+            holder.requirementTypeTV.setText(holder.itemView.getContext().getString(R.string.na));
+        } else {
+            holder.requirementTypeTV.setText(reqType.name);
+        }
+
     }
 
     @Override
