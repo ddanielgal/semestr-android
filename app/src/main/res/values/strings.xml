@@ -33,4 +33,7 @@
     <string name="deadline">Deadline</string>
     <string name="type">Type</string>
     <string name="new_requirement">Add new requirement</string>
+    <string name="task_coming_up">Task coming up!</string>
+    <string name="within_3_days">is within 3 days!</string>
+    <string name="for_subject">for</string>
 </resources>

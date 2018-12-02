@@ -1,6 +1,8 @@
 package hu.danielgaldev.semestr;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +14,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import hu.danielgaldev.semestr.adapter.RequirementAdapter;
@@ -29,6 +33,7 @@ implements NewReqTypeDialogFragment.NewReqTypeDialogListener,
 
     private Long semesterId;
     private Long subjectId;
+    private String subjectName;
     private RecyclerView recyclerView;
     private SemestrDatabase database;
     private RequirementAdapter adapter;
@@ -43,6 +48,7 @@ implements NewReqTypeDialogFragment.NewReqTypeDialogListener,
         Intent intent = getIntent();
         semesterId = Long.parseLong(intent.getStringExtra("semesterId"));
         subjectId = Long.parseLong(intent.getStringExtra("subjectId"));
+        subjectName = intent.getStringExtra("subjectName");
 
         database = SemestrDatabase.getInstance(getApplicationContext());
 
@@ -142,7 +148,22 @@ implements NewReqTypeDialogFragment.NewReqTypeDialogListener,
             @Override
             protected void onPostExecute(Requirement requirement) {
                 adapter.addItem(requirement);
+                createNotificationEvent(requirement);
             }
         }.execute();
+    }
+
+    private void createNotificationEvent(Requirement req) {
+        Calendar notificationDate = Calendar.getInstance();
+        notificationDate.set(req.deadline.getYear(), req.deadline.getMonth(), req.deadline.getDay());
+        notificationDate.add(Calendar.DAY_OF_MONTH, -3);
+
+        Intent intent = new Intent(this, StudyNotificationService.class);
+        intent.putExtra("requirementName", req.name);
+        intent.putExtra("subjectName", subjectName);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 1, intent, 0);
+
+        AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
+        am.set(AlarmManager.RTC_WAKEUP, notificationDate.getTimeInMillis(), pendingIntent);
     }
 }

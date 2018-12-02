@@ -105,6 +105,7 @@ implements NewSubjectDialogFragment.NewSubjectDialogListener,
         Intent myIntent = new Intent(SubjectActivity.this, RequirementsActivity.class);
         myIntent.putExtra("subjectId", subject.id.toString());
         myIntent.putExtra("semesterId", semesterId.toString());
+        myIntent.putExtra("subjectName", subject.name);
         SubjectActivity.this.startActivity(myIntent);
     }
 }
