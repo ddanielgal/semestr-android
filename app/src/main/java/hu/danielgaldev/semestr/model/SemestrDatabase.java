@@ -79,7 +79,7 @@ public abstract class SemestrDatabase extends RoomDatabase {
 
                                 // Requirements
                                 // Prog1
-                                Date date = new Date(2018, 12, 1);
+                                Date date = new Date(2019, 1, 4);
                                 for (int i = 1; i < 8; i++) {
                                     db.reqDao().insert(new Requirement("Labor " + i, date, "", reqTypeIds.get(2), subjectIds.get(0)));
                                 }

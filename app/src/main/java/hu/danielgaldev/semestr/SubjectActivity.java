@@ -11,11 +11,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import hu.danielgaldev.semestr.adapter.SubjectAdapter;
+import hu.danielgaldev.semestr.adapter.tools.SubjectCollection;
 import hu.danielgaldev.semestr.fragments.dialog.NewSubjectDialogFragment;
 import hu.danielgaldev.semestr.model.SemestrDatabase;
+import hu.danielgaldev.semestr.model.pojo.Requirement;
+import hu.danielgaldev.semestr.model.pojo.RequirementType;
 import hu.danielgaldev.semestr.model.pojo.Subject;
 
 public class SubjectActivity extends AppCompatActivity
@@ -44,6 +49,12 @@ implements NewSubjectDialogFragment.NewSubjectDialogListener,
         initAddSubjectButton();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadItemsInBackground();
+    }
+
     private void initRecyclerView() {
         recyclerView = findViewById(R.id.SubjectRecyclerView);
         adapter = new SubjectAdapter(this);
@@ -68,16 +79,24 @@ implements NewSubjectDialogFragment.NewSubjectDialogListener,
 
     @SuppressLint("StaticFieldLeak")
     private void loadItemsInBackground() {
-        new AsyncTask<Void, Void, List<Subject>>() {
+        new AsyncTask<Void, Void, SubjectCollection>() {
 
             @Override
-            protected List<Subject> doInBackground(Void... voids) {
-                return database.subjectDao().getSubjectsForSemester(semesterId);
+            protected SubjectCollection doInBackground(Void... voids) {
+                HashMap<Subject, List<Requirement>> map = new HashMap<>();
+                List<Subject> subs = new ArrayList<>(database.subjectDao().getSubjectsForSemester(semesterId));
+                for (Subject s : subs) {
+                    map.put(s, database.reqDao().getRequirementsForSubject(s.id));
+                }
+                List<RequirementType> reqTypeList = database.reqTypeDao().getAll();
+                return new SubjectCollection(map, reqTypeList);
             }
 
             @Override
-            protected void onPostExecute(List<Subject> subs) {
-                adapter.update(subs);
+            protected void onPostExecute(SubjectCollection collection) {
+                adapter.update(new ArrayList<>(collection.getSubReqMap().keySet()));
+                adapter.setMap(collection.getSubReqMap());
+                adapter.setReqTypeList(collection.getReqTypeList());
             }
         }.execute();
     }

@@ -44,25 +44,8 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
                 .inflate(R.layout.item_subject_list, viewGroup, false);
 
         db = SemestrDatabase.getInstance(viewGroup.getContext());
-        loadReqTypes();
 
         return new SubjectViewHolder(itemView);
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private void loadReqTypes() {
-        new AsyncTask<Void, Void, List<RequirementType>>() {
-
-            @Override
-            protected List<RequirementType> doInBackground(Void... voids) {
-                return db.reqTypeDao().getAll();
-            }
-
-            @Override
-            protected void onPostExecute(List<RequirementType> rts) {
-                reqTypes.addAll(rts);
-            }
-        }.execute();
     }
 
     private RequirementType getReqTypeById(Long id) {
@@ -72,22 +55,6 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
             }
         }
         return null;
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private void loadRequirements(final Subject subject) {
-        new AsyncTask<Void, Void, List<Requirement>>() {
-
-            @Override
-            protected List<Requirement> doInBackground(Void... voids) {
-                return db.reqDao().getRequirementsForSubject(subject.id);
-            }
-
-            @Override
-            protected void onPostExecute(List<Requirement> reqs) {
-                subToReqsMap.put(subject, reqs);
-            }
-        }.execute();
     }
 
     @Override
@@ -123,6 +90,10 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
         return subjects.size();
     }
 
+    public void setReqTypeList(List<RequirementType> reqTypeList) {
+        reqTypes = reqTypeList;
+    }
+
     class SubjectViewHolder extends RecyclerView.ViewHolder
     implements View.OnClickListener {
 
@@ -149,13 +120,16 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     public void addItem(Subject subject) {
         subjects.add(subject);
         notifyItemInserted(subjects.size() - 1);
-        loadRequirements(subject);
     }
 
     public void update(List<Subject> subject) {
         subjects.clear();
         subjects.addAll(subject);
         notifyDataSetChanged();
+    }
+
+    public void setMap(HashMap<Subject, List<Requirement>> map){
+        subToReqsMap = map;
     }
 
     public interface SubjectClickListener {

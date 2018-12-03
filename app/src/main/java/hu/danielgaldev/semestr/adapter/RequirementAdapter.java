@@ -9,8 +9,12 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import hu.danielgaldev.semestr.R;
 import hu.danielgaldev.semestr.model.SemestrDatabase;
@@ -51,7 +55,10 @@ public class RequirementAdapter
     public void onBindViewHolder(@NonNull RequirementViewHolder holder, int i) {
         Requirement req = items.get(i);
         holder.requirementNameTV.setText(req.name);
-        holder.requirementDeadlineTV.setText(req.deadline.toString());
+        Calendar cal = Calendar.getInstance();
+        cal.set(req.deadline.getYear(), req.deadline.getMonth(), req.deadline.getDay());
+        DateFormat f = new SimpleDateFormat("yyyy.MM.dd.", Locale.FRANCE);
+        holder.requirementDeadlineTV.setText(f.format(cal.getTime()));
         RequirementType reqType = findReqTypeById(req.requirementTypeId);
         if (reqType == null) {
             holder.requirementTypeTV.setText(holder.itemView.getContext().getString(R.string.na));
